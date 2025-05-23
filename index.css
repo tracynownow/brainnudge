@@ -1,0 +1,125 @@
+@import '@fontsource/poppins/300.css';
+@import '@fontsource/poppins/400.css';
+@import '@fontsource/poppins/500.css';
+@import '@fontsource/poppins/600.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-family: 'Poppins', system-ui, sans-serif;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animate-gradient {
+  background-size: 200% 200%;
+  animation: gradient 8s ease infinite;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-out forwards;
+}
+
+@keyframes pulse-scale {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+@keyframes wiggle {
+  0% { transform: rotate(0deg); }
+  25% { transform: rotate(-3deg); }
+  75% { transform: rotate(3deg); }
+  100% { transform: rotate(0deg); }
+}
+
+@keyframes glow {
+  0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.5); }
+  70% { box-shadow: 0 0 0 10px rgba(59, 130, 246, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
+}
+
+.hover-scale {
+  @apply transition-transform duration-200;
+}
+
+.hover-scale:hover {
+  @apply transform scale-105;
+}
+
+.hover-pulse {
+  @apply transition-transform duration-200;
+}
+
+.hover-pulse:hover {
+  animation: pulse-scale 0.5s ease-in-out;
+}
+
+.click-wiggle:active {
+  animation: wiggle 0.3s ease-in-out;
+}
+
+.click-glow:active {
+  animation: glow 0.5s ease-out;
+}
+
+/* Button base styles with micro-interactions */
+.btn-primary {
+  @apply bg-blue-500 text-white rounded-lg transition-all duration-200 hover:bg-blue-600 active:transform active:scale-95 hover-pulse click-glow;
+}
+
+.btn-secondary {
+  @apply bg-slate-100 text-slate-700 rounded-lg transition-all duration-200 hover:bg-slate-200 active:transform active:scale-95 hover-pulse;
+}
+
+.btn-success {
+  @apply bg-green-100 text-green-700 rounded-lg transition-all duration-200 hover:bg-green-200 active:transform active:scale-95 hover-pulse;
+}
+
+.btn-warning {
+  @apply bg-amber-100 text-amber-700 rounded-lg transition-all duration-200 hover:bg-amber-200 active:transform active:scale-95 hover-pulse;
+}
+
+/* Task card animations */
+.task-card {
+  @apply transition-all duration-300 hover:shadow-md hover:transform hover:-translate-y-1;
+}
+
+/* Checkbox animations */
+.checkbox-bounce {
+  @apply transition-transform duration-200 hover:scale-110 active:scale-90;
+}
+
+/* Icon animations */
+.icon-spin {
+  @apply transition-transform duration-300 hover:rotate-180;
+}
+
+.icon-bounce {
+  @apply transition-transform duration-200 hover:scale-125 active:scale-90;
+}
