@@ -1,3 +1,5 @@
+// api/generate-subtasks.ts
+
 import { VercelRequest, VercelResponse } from '@vercel/node';
 import OpenAI from 'openai';
 
@@ -6,28 +8,38 @@ const openai = new OpenAI({
 });
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  const { goal } = req.body;
+  const { taskDescription } = req.body;
 
-  if (!goal) {
-    return res.status(400).json({ error: 'Missing goal' });
+  if (!taskDescription) {
+    return res.status(400).json({ error: 'Missing task description' });
   }
 
   try {
     const completion = await openai.chat.completions.create({
-      model: 'gpt-3.5-turbo',
+      model: "gpt-3.5-turbo",
       messages: [
-        { role: 'system', content: 'You break down goals into 4-5 specific, clear action steps.' },
-        { role: 'user', content: `Break this goal into steps: "${goal}"` }
+        {
+          role: "system",
+          content: "You are a helpful assistant that breaks down tasks into smaller, manageable subtasks. Be specific and actionable."
+        },
+        {
+          role: "user",
+          content: `Break this task into 3-4 smaller subtasks: "${taskDescription}"`
+        }
       ]
     });
 
-    const steps = completion.choices[0].message.content?.split('\n')
+    const subtasks = completion.choices[0].message.content?.split('\n')
       .map(line => line.replace(/^\d+\.\s*/, '').trim())
-      .filter(Boolean);
+      .filter(line => line.length > 0)
+      .map(description => ({
+        description,
+        completed: false
+      })) || [];
 
-    res.status(200).json({ steps });
+    res.status(200).json({ subtasks });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: 'Failed to generate tasks' });
+    res.status(500).json({ error: 'Failed to generate subtasks' });
   }
 }
